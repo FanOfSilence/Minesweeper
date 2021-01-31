@@ -1,5 +1,12 @@
 #include "Logic.h"
 
+vector<vector<TileType>> getNewGuessBoard(vector<vector<TileType>> knownBoard)
+{
+    auto frontierIndexes = getFrontierIndexes(knownBoard);
+    auto guesses = getGuesses(knownBoard, frontierIndexes);
+    return mergeGuesses(guesses, frontierIndexes, knownBoard);
+}
+
 vector<vector<TileType>> mergeGuesses(vector<vector<vector<TileType>>> guesses, vector<IndexPair> frontierIndexes, vector<vector<TileType>> knownBoard)
 {
     if (guesses.size() > 0)

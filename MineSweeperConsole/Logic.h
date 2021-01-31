@@ -103,6 +103,8 @@ struct IndexPair
     }
 };
 
+vector<vector<TileType>> getNewGuessBoard(vector<vector<TileType>> knownBoard);
+
 vector<vector<TileType>> mergeGuesses(vector<vector<vector<TileType>>> guesses, vector<IndexPair> frontierIndexes, vector<vector<TileType>> knownBoard);
 
 vector<vector<vector<TileType>>> getGuesses(vector<vector<TileType>> knownBoard, vector<IndexPair> frontierIndexes);
