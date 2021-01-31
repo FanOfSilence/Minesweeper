@@ -98,8 +98,11 @@ vector<vector<vector<TileType>>> getGuesses(vector<vector<TileType>> knownBoard,
             auto copiedVector = guessVector;
             guesses.push_back(copiedVector);
             // Now we go back again
-            guessVector[row][col] = UnknownTile{};
-            indexIntoFrontierIndexes--;
+            if (indexIntoFrontierIndexes != 0)
+            {
+                guessVector[row][col] = UnknownTile{};
+                indexIntoFrontierIndexes--;
+            }
         }
     }
 

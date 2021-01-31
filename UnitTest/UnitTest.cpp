@@ -201,6 +201,42 @@ namespace UnitTest
 			}
 		}
 
+		TEST_METHOD(getGuesses2)
+		{
+			vector<vector<TileType>> board{ {Blank{}, Number(1), Number(1), Number(1), Blank{}, Blank{}, Number(2), Mine{}, UnknownTile{}},
+											{Blank{}, Number(1), Mine{}, Number(2), Number(1), Number(1), Number(2), Mine{}, Number(2)},
+											{Blank{}, Number(1), Number(1), Number(2), Mine{}, Number(1), Number(1), Number(1), Number(1)},
+											{Blank{}, Blank{}, Blank{}, Number(1), Number(1), Number(2), Number(1), Number(2), Number(1)},
+											{Blank{}, Blank{}, Blank{}, Blank{}, Blank{}, Number(1), Mine{}, Number(3), Mine{}},
+											{Blank{}, Blank{}, Blank{}, Blank{}, Number(1), Number(2), Number(2), Number(3), Mine{}},
+											{Number(1), Number(1), Number(2), Number(1), Number(2), Mine{}, Number(1), Number(1), Number(1)},
+											{Number(1), Mine{}, Number(2), Mine{}, Number(2), Number(1), Number(1),  Blank{}, Blank{}},
+											{Number(1), Number(1), Number(2), Number(1), Number(1), Blank{}, Blank{}, Blank{}, Blank{}}
+			};
+			auto indexPairs = getFrontierIndexes(board);
+			auto guesses = getGuesses(board, indexPairs);
+			Assert::AreEqual((int)guesses.size(), 1);
+			vector<vector<TileType>> guessBoard1{	{Blank{}, Number(1), Number(1), Number(1), Blank{}, Blank{}, Number(2), Mine{}, GuessNotMine{}},
+													{Blank{}, Number(1), Mine{}, Number(2), Number(1), Number(1), Number(2), Mine{}, Number(2)},
+													{Blank{}, Number(1), Number(1), Number(2), Mine{}, Number(1), Number(1), Number(1), Number(1)},
+													{Blank{}, Blank{}, Blank{}, Number(1), Number(1), Number(2), Number(1), Number(2), Number(1)},
+													{Blank{}, Blank{}, Blank{}, Blank{}, Blank{}, Number(1), Mine{}, Number(3), Mine{}},
+													{Blank{}, Blank{}, Blank{}, Blank{}, Number(1), Number(2), Number(2), Number(3), Mine{}},
+													{Number(1), Number(1), Number(2), Number(1), Number(2), Mine{}, Number(1), Number(1), Number(1)},
+													{Number(1), Mine{}, Number(2), Mine{}, Number(2), Number(1), Number(1),  Blank{}, Blank{}},
+													{Number(1), Number(1), Number(2), Number(1), Number(1), Blank{}, Blank{}, Blank{}, Blank{}}
+			};
+
+			auto firstGuess = guesses[0];
+			for (int row = 0; row < firstGuess.size(); row++)
+			{
+				for (int col = 0; col < firstGuess.size(); col++)
+				{
+					Assert::AreEqual(guessBoard1[row][col].index(), firstGuess[row][col].index());
+				}
+			}
+		}
+
 		TEST_METHOD(mergeGuesses1)
 		{
 			vector<vector<TileType>> board{ {Blank{}, Number(1), UnknownTile{}, UnknownTile{}, UnknownTile{}, UnknownTile{}, UnknownTile{}, UnknownTile{}, UnknownTile{}},
