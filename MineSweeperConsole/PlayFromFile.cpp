@@ -19,8 +19,8 @@ void PlayFromFile()
             {
                 vector<vector<TileType>> board;
                 string line;
-                int row = 0;
-                int col = 0;
+                getline(readFile, line);
+                auto minesLeft = stoi(line);
                 while (getline(readFile, line))
                 {
                     vector<TileType> boardRow;
@@ -69,7 +69,7 @@ void PlayFromFile()
                     continue;
                 }
 
-                auto newGuessBoard = getNewGuessBoard(board);
+                auto newGuessBoard = getNewGuessBoard(board, minesLeft);
 
                 ofstream writeFile;
                 writeFile.open("writeFile.txt", ios::out | ios::trunc);

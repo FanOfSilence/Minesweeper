@@ -1,9 +1,10 @@
 #include "Logic.h"
 
-vector<vector<TileType>> getNewGuessBoard(vector<vector<TileType>> knownBoard)
+vector<vector<TileType>> getNewGuessBoard(vector<vector<TileType>> knownBoard, int minesLeft)
 {
     auto frontierIndexes = getFrontierIndexes(knownBoard);
-    auto guesses = getGuesses(knownBoard, frontierIndexes);
+    int usedMines = 0;
+    auto guesses = getGuesses(knownBoard, frontierIndexes, minesLeft);
     return mergeGuesses(guesses, frontierIndexes, knownBoard);
 }
 
@@ -33,7 +34,7 @@ vector<vector<TileType>> mergeGuesses(vector<vector<vector<TileType>>> guesses, 
     return knownBoard;
 }
 
-vector<vector<vector<TileType>>> getGuesses(vector<vector<TileType>> knownBoard, vector<IndexPair> frontierIndexes)
+vector<vector<vector<TileType>>> getGuesses(vector<vector<TileType>> knownBoard, vector<IndexPair> frontierIndexes, int minesLeft)
 {
     vector<vector<vector<TileType>>> guesses;
 
@@ -50,11 +51,13 @@ vector<vector<vector<TileType>>> getGuesses(vector<vector<TileType>> knownBoard,
         if (std::holds_alternative<UnknownTile>(tile))
         {
             guessVector[row][col] = GuessMine{};
+            minesLeft--;
         }
         // GuessMine
         else if (std::holds_alternative<GuessMine>(tile))
         {
             guessVector[row][col] = GuessNotMine{};
+            minesLeft++;
         }
         // GuessNotMine
         else if (std::holds_alternative<GuessNotMine>(tile))
@@ -77,7 +80,7 @@ vector<vector<vector<TileType>>> getGuesses(vector<vector<TileType>> knownBoard,
             continue;
         }
         // This value looks promising
-        else if (guessIsOk(guessVector, row, col))
+        else if (guessIsOk(guessVector, row, col) && minesLeft >= 0)
         {
             if (indexIntoFrontierIndexes < frontierIndexes.size() - 1)
             {

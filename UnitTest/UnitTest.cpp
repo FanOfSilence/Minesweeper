@@ -137,7 +137,7 @@ namespace UnitTest
 											{UnknownTile{}, UnknownTile{}, UnknownTile{}, UnknownTile{}, UnknownTile{}, UnknownTile{}, UnknownTile{}, UnknownTile{}, UnknownTile{}}
 										};
 			auto indexPairs = getFrontierIndexes(board);
-			auto guesses = getGuesses(board, indexPairs);
+			auto guesses = getGuesses(board, indexPairs, 10);
 			Assert::AreEqual((int) guesses.size(), 3);
 			vector<vector<TileType>> guessBoard1{	{Blank{}, Number(1), GuessNotMine{}, UnknownTile{}, UnknownTile{}, UnknownTile{}, UnknownTile{}, UnknownTile{}, UnknownTile{}},
 													{Blank{}, Number(1), GuessMine{}, GuessNotMine{}, GuessNotMine{}, UnknownTile{}, UnknownTile{}, UnknownTile{}, UnknownTile{}},
@@ -214,7 +214,7 @@ namespace UnitTest
 											{Number(1), Number(1), Number(2), Number(1), Number(1), Blank{}, Blank{}, Blank{}, Blank{}}
 			};
 			auto indexPairs = getFrontierIndexes(board);
-			auto guesses = getGuesses(board, indexPairs);
+			auto guesses = getGuesses(board, indexPairs, 10);
 			Assert::AreEqual((int)guesses.size(), 1);
 			vector<vector<TileType>> guessBoard1{	{Blank{}, Number(1), Number(1), Number(1), Blank{}, Blank{}, Number(2), Mine{}, GuessNotMine{}},
 													{Blank{}, Number(1), Mine{}, Number(2), Number(1), Number(1), Number(2), Mine{}, Number(2)},
@@ -225,6 +225,42 @@ namespace UnitTest
 													{Number(1), Number(1), Number(2), Number(1), Number(2), Mine{}, Number(1), Number(1), Number(1)},
 													{Number(1), Mine{}, Number(2), Mine{}, Number(2), Number(1), Number(1),  Blank{}, Blank{}},
 													{Number(1), Number(1), Number(2), Number(1), Number(1), Blank{}, Blank{}, Blank{}, Blank{}}
+			};
+
+			auto firstGuess = guesses[0];
+			for (int row = 0; row < firstGuess.size(); row++)
+			{
+				for (int col = 0; col < firstGuess.size(); col++)
+				{
+					Assert::AreEqual(guessBoard1[row][col].index(), firstGuess[row][col].index());
+				}
+			}
+		}
+
+		TEST_METHOD(getGuesses3)
+		{
+			vector<vector<TileType>> board{ {Blank{}, Blank{}, Blank{}, Number(1), Mine{}, Number(1), Blank{}, Blank{}, Blank{}},
+											{Number(1), Number(2), Number(2), Number(2), Number(1), Number(1), Blank{}, Blank{}, Blank{}},
+											{Number(2), Mine{}, Mine{}, Number(1), Number(1), Number(1), Number(1), Blank{}, Blank{}},
+											{Mine{}, Number(4), Number(3), Number(1), Number(1), Mine{}, Number(1), Blank{}, Blank{}, Blank{}},
+											{Number(2), Mine{}, Number(1), Blank{}, Number(1), Number(1), Number(1), Blank{}, Blank{}},
+											{Number(1), Number(2), Number(2), Number(1), Blank{}, Blank{}, Blank{}, Blank{}, Blank{}},
+											{Number(1), Number(2), Mine{}, Number(2), Number(1), Blank{}, Blank{}, Blank{}, Blank{}},
+											{UnknownTile{}, UnknownTile{}, Number(3), Mine{}, Number(1), Blank{}, Number(1), Number(1), Number(1)},
+											{UnknownTile{}, UnknownTile{}, Number(2), Number(1), Number(1), Blank{}, Number(1), Mine{}, Number(1)}
+			};
+			auto indexPairs = getFrontierIndexes(board);
+			auto guesses = getGuesses(board, indexPairs, 1);
+			Assert::AreEqual((int)guesses.size(), 1);
+			vector<vector<TileType>> guessBoard1{	{Blank{}, Blank{}, Blank{}, Number(1), Mine{}, Number(1), Blank{}, Blank{}, Blank{}},
+													{Number(1), Number(2), Number(2), Number(2), Number(1), Number(1), Blank{}, Blank{}, Blank{}},
+													{Number(2), Mine{}, Mine{}, Number(1), Number(1), Number(1), Number(1), Blank{}, Blank{}},
+													{Mine{}, Number(4), Number(3), Number(1), Number(1), Mine{}, Number(1), Blank{}, Blank{}, Blank{}},
+													{Number(2), Mine{}, Number(1), Blank{}, Number(1), Number(1), Number(1), Blank{}, Blank{}},
+													{Number(1), Number(2), Number(2), Number(1), Blank{}, Blank{}, Blank{}, Blank{}, Blank{}},
+													{Number(1), Number(2), Mine{}, Number(2), Number(1), Blank{}, Blank{}, Blank{}, Blank{}},
+													{GuessNotMine{}, GuessMine{}, Number(3), Mine{}, Number(1), Blank{}, Number(1), Number(1), Number(1)},
+													{UnknownTile{}, GuessNotMine{}, Number(2), Number(1), Number(1), Blank{}, Number(1), Mine{}, Number(1)}
 			};
 
 			auto firstGuess = guesses[0];
