@@ -60,7 +60,7 @@ void PlayFromFile()
                 {
                     if (boardRow.size() != board.size())
                     {
-                        cout << "The matrix has to be symmetrical\n";
+                        cout << "The matrix has to be symmetrical, rowSize: " << board.size() << ", colSize: " << boardRow.size() << "\n";
                         symmetrical = false;
                     }
                 }
