@@ -108,6 +108,7 @@ void PlayFromFile()
                         }
                         writeFile << "\n";
                     }
+                    cout << "Check writeFile.txt";
                 }
                 else
                 {
