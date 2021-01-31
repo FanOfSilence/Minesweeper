@@ -21,9 +21,15 @@
     <ClCompile Include="Logic.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PlayFromFile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Logic.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayFromFile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

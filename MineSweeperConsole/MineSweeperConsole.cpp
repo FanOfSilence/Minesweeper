@@ -4,12 +4,16 @@
 #include <iostream>
 #include <vector>
 #include <variant>
+#include "PlayFromFile.h"
+#include <filesystem>
 
 using namespace std;
+namespace fs = std::filesystem;
 
 int main()
 {
-    std::cout << "Hello World!\n";
+    std::cout << "Current path is " << fs::current_path() << '\n';
+    PlayFromFile();
 }
 
 

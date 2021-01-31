@@ -3,6 +3,8 @@
 #include <vector>
 #include <variant>
 #include <string>
+#include <type_traits>
+#include <iostream>
 
 using namespace std;
 
@@ -18,9 +20,9 @@ struct Blank
         return "B";
     }
 };
-struct Unknown
+struct UnknownTile
 {
-    bool operator==(const Unknown& pair)
+    bool operator==(const UnknownTile& pair)
     {
         return true;
     }
@@ -84,7 +86,14 @@ struct Number
         return std::to_string(num);
     }
 };
-using TileType = std::variant<Blank, Unknown, Mine, GuessMine, GuessNotMine, Number>;
+using TileType = std::variant<Blank, UnknownTile, Mine, GuessMine, GuessNotMine, Number>;
+
+/*std::ostream& operator<<(std::ostream& os, const TileType& tileType)
+{
+    std::cout << tileType;
+    std::visit([](auto t) {std::cout << t.toString(); }, tileType);
+    return std::cout;
+}*/
 
 struct IndexPair
 {

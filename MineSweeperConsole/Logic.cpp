@@ -47,7 +47,7 @@ vector<vector<vector<TileType>>> getGuesses(vector<vector<TileType>> knownBoard,
 
         // Update with new guess
         // Unknown
-        if (std::holds_alternative<Unknown>(tile))
+        if (std::holds_alternative<UnknownTile>(tile))
         {
             guessVector[row][col] = GuessMine{};
         }
@@ -59,7 +59,7 @@ vector<vector<vector<TileType>>> getGuesses(vector<vector<TileType>> knownBoard,
         // GuessNotMine
         else if (std::holds_alternative<GuessNotMine>(tile))
         {
-            guessVector[row][col] = Unknown{};
+            guessVector[row][col] = UnknownTile{};
         }
 
         tile = guessVector[row][col];
@@ -98,7 +98,7 @@ vector<vector<vector<TileType>>> getGuesses(vector<vector<TileType>> knownBoard,
             auto copiedVector = guessVector;
             guesses.push_back(copiedVector);
             // Now we go back again
-            guessVector[row][col] = Unknown{};
+            guessVector[row][col] = UnknownTile{};
             indexIntoFrontierIndexes--;
         }
     }
@@ -130,7 +130,7 @@ bool guessIsOk(vector<vector<TileType>> guessBoard, int row, int col)
                 {
                     mines++;
                 }
-                else if (std::holds_alternative<Unknown>(checkTile))
+                else if (std::holds_alternative<UnknownTile>(checkTile))
                 {
                     unknowns++;
                 }
@@ -156,7 +156,7 @@ vector<IndexPair> getFrontierIndexes(vector<vector<TileType>> knownBoard)
         {
             auto tileType = knownBoardRow[col];
             // Unknown
-            if (std::holds_alternative<Unknown>(tileType))
+            if (std::holds_alternative<UnknownTile>(tileType))
             {
                 auto neighborIndexes = getNeighborIndexes(row, col, knownBoard.size());
                 for (auto indexPair : neighborIndexes)

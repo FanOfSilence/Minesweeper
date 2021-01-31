@@ -145,9 +145,11 @@
   <ItemGroup>
     <ClCompile Include="Logic.cpp" />
     <ClCompile Include="MineSweeperConsole.cpp" />
+    <ClCompile Include="PlayFromFile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Logic.h" />
+    <ClInclude Include="PlayFromFile.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
