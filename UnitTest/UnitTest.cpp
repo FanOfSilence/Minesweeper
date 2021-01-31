@@ -149,7 +149,6 @@ namespace UnitTest
 													{GuessNotMine{}, GuessMine{}, GuessNotMine{}, GuessMine{}, GuessNotMine{}, GuessNotMine{}, Unknown{}, Unknown{}, Unknown{}},
 													{Unknown{}, Unknown{}, Unknown{}, Unknown{}, Unknown{}, Unknown{}, Unknown{}, Unknown{}, Unknown{}}
 												};
-			//Assert::IsTrue(std::count(guesses.begin(), guesses.end(), guessBoard1));
 
 			auto firstGuess = guesses[0];
 			for (int row = 0; row < firstGuess.size(); row++)
@@ -198,6 +197,78 @@ namespace UnitTest
 				for (int col = 0; col < thirdGuess.size(); col++)
 				{
 					Assert::AreEqual(guessBoard3[row][col].index(), thirdGuess[row][col].index());
+				}
+			}
+		}
+
+		TEST_METHOD(mergeGuesses1)
+		{
+			vector<vector<TileType>> board{ {Blank{}, Number(1), Unknown{}, Unknown{}, Unknown{}, Unknown{}, Unknown{}, Unknown{}, Unknown{}},
+											{Blank{}, Number(1), Unknown{}, Unknown{}, Unknown{}, Unknown{}, Unknown{}, Unknown{}, Unknown{}},
+											{Blank{}, Number(1), Number(1), Number(2), Unknown{}, Unknown{}, Unknown{}, Unknown{}, Unknown{}},
+											{Blank{}, Blank{}, Blank{}, Number(1), Number(1), Number(2), Unknown{}, Unknown{}, Unknown{}},
+											{Blank{}, Blank{}, Blank{}, Blank{}, Blank{}, Number(1), Unknown{}, Unknown{}, Unknown{}},
+											{Blank{}, Blank{}, Blank{}, Blank{}, Number(1), Number(2), Unknown{}, Unknown{}, Unknown{}},
+											{Number(1), Number(1), Number(2), Number(1), Number(2), Unknown{}, Unknown{}, Unknown{}, Unknown{}},
+											{Unknown{}, Unknown{}, Unknown{}, Unknown{}, Unknown{}, Unknown{}, Unknown{}, Unknown{}, Unknown{}},
+											{Unknown{}, Unknown{}, Unknown{}, Unknown{}, Unknown{}, Unknown{}, Unknown{}, Unknown{}, Unknown{}}
+										 };
+			auto indexPairs = getFrontierIndexes(board);
+
+			vector<vector<TileType>> guessBoard1{	{Blank{}, Number(1), GuessNotMine{}, Unknown{}, Unknown{}, Unknown{}, Unknown{}, Unknown{}, Unknown{}},
+													{Blank{}, Number(1), GuessMine{}, GuessNotMine{}, GuessNotMine{}, Unknown{}, Unknown{}, Unknown{}, Unknown{}},
+													{Blank{}, Number(1), Number(1), Number(2), GuessMine{}, GuessNotMine{}, GuessMine{}, Unknown{}, Unknown{}},
+													{Blank{}, Blank{}, Blank{}, Number(1), Number(1), Number(2), GuessNotMine{}, Unknown{}, Unknown{}},
+													{Blank{}, Blank{}, Blank{}, Blank{}, Blank{}, Number(1), GuessNotMine{}, Unknown{}, Unknown{}},
+													{Blank{}, Blank{}, Blank{}, Blank{}, Number(1), Number(2), GuessMine{}, Unknown{}, Unknown{}},
+													{Number(1), Number(1), Number(2), Number(1), Number(2), GuessMine{}, GuessNotMine{}, Unknown{}, Unknown{}},
+													{GuessNotMine{}, GuessMine{}, GuessNotMine{}, GuessMine{}, GuessNotMine{}, GuessNotMine{}, Unknown{}, Unknown{}, Unknown{}},
+													{Unknown{}, Unknown{}, Unknown{}, Unknown{}, Unknown{}, Unknown{}, Unknown{}, Unknown{}, Unknown{}}
+			};
+
+			vector<vector<TileType>> guessBoard2{	{Blank{}, Number(1), GuessNotMine{}, Unknown{}, Unknown{}, Unknown{}, Unknown{}, Unknown{}, Unknown{}},
+													{Blank{}, Number(1), GuessMine{}, GuessNotMine{}, GuessNotMine{}, Unknown{}, Unknown{}, Unknown{}, Unknown{}},
+													{Blank{}, Number(1), Number(1), Number(2), GuessMine{}, GuessNotMine{}, GuessNotMine{}, Unknown{}, Unknown{}},
+													{Blank{}, Blank{}, Blank{}, Number(1), Number(1), Number(2), GuessMine{}, Unknown{}, Unknown{}},
+													{Blank{}, Blank{}, Blank{}, Blank{}, Blank{}, Number(1), GuessNotMine{}, Unknown{}, Unknown{}},
+													{Blank{}, Blank{}, Blank{}, Blank{}, Number(1), Number(2), GuessNotMine{}, Unknown{}, Unknown{}},
+													{Number(1), Number(1), Number(2), Number(1), Number(2), GuessMine{}, GuessMine{}, Unknown{}, Unknown{}},
+													{GuessNotMine{}, GuessMine{}, GuessNotMine{}, GuessMine{}, GuessNotMine{}, GuessNotMine{}, Unknown{}, Unknown{}, Unknown{}},
+													{Unknown{}, Unknown{}, Unknown{}, Unknown{}, Unknown{}, Unknown{}, Unknown{}, Unknown{}, Unknown{}}
+			};
+
+
+			vector<vector<TileType>> guessBoard3{	{Blank{}, Number(1), GuessNotMine{}, Unknown{}, Unknown{}, Unknown{}, Unknown{}, Unknown{}, Unknown{}},
+													{Blank{}, Number(1), GuessMine{}, GuessNotMine{}, GuessNotMine{}, Unknown{}, Unknown{}, Unknown{}, Unknown{}},
+													{Blank{}, Number(1), Number(1), Number(2), GuessMine{}, GuessNotMine{}, GuessNotMine{}, Unknown{}, Unknown{}},
+													{Blank{}, Blank{}, Blank{}, Number(1), Number(1), Number(2), GuessNotMine{}, Unknown{}, Unknown{}},
+													{Blank{}, Blank{}, Blank{}, Blank{}, Blank{}, Number(1), GuessMine{}, Unknown{}, Unknown{}},
+													{Blank{}, Blank{}, Blank{}, Blank{}, Number(1), Number(2), GuessNotMine{}, Unknown{}, Unknown{}},
+													{Number(1), Number(1), Number(2), Number(1), Number(2), GuessMine{}, GuessNotMine{}, Unknown{}, Unknown{}},
+													{GuessNotMine{}, GuessMine{}, GuessNotMine{}, GuessMine{}, GuessNotMine{}, GuessNotMine{}, Unknown{}, Unknown{}, Unknown{}},
+													{Unknown{}, Unknown{}, Unknown{}, Unknown{}, Unknown{}, Unknown{}, Unknown{}, Unknown{}, Unknown{}}
+												};
+
+			vector<vector<vector<TileType>>> guesses{ guessBoard1, guessBoard2, guessBoard3 };
+
+			auto newBoard = mergeGuesses(guesses, indexPairs, board);
+
+			vector<vector<TileType>> compareBoard{	{Blank{}, Number(1), GuessNotMine{}, Unknown{}, Unknown{}, Unknown{}, Unknown{}, Unknown{}, Unknown{}},
+													{Blank{}, Number(1), GuessMine{}, GuessNotMine{}, GuessNotMine{}, Unknown{}, Unknown{}, Unknown{}, Unknown{}},
+													{Blank{}, Number(1), Number(1), Number(2), GuessMine{}, GuessNotMine{}, Unknown{}, Unknown{}, Unknown{}},
+													{Blank{}, Blank{}, Blank{}, Number(1), Number(1), Number(2), Unknown{}, Unknown{}, Unknown{}},
+													{Blank{}, Blank{}, Blank{}, Blank{}, Blank{}, Number(1), Unknown{}, Unknown{}, Unknown{}},
+													{Blank{}, Blank{}, Blank{}, Blank{}, Number(1), Number(2), Unknown{}, Unknown{}, Unknown{}},
+													{Number(1), Number(1), Number(2), Number(1), Number(2), GuessMine{}, Unknown{}, Unknown{}, Unknown{}},
+													{GuessNotMine{}, GuessMine{}, GuessNotMine{}, GuessMine{}, GuessNotMine{}, GuessNotMine{}, Unknown{}, Unknown{}, Unknown{}},
+													{Unknown{}, Unknown{}, Unknown{}, Unknown{}, Unknown{}, Unknown{}, Unknown{}, Unknown{}, Unknown{}}
+			};
+
+			for (int row = 0; row < compareBoard.size(); row++)
+			{
+				for (int col = 0; col < compareBoard.size(); col++)
+				{
+					Assert::AreEqual(compareBoard[row][col].index(), newBoard[row][col].index());
 				}
 			}
 		}

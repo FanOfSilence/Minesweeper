@@ -1,5 +1,31 @@
 #include "Logic.h"
 
+vector<vector<TileType>> mergeGuesses(vector<vector<vector<TileType>>> guesses, vector<IndexPair> frontierIndexes, vector<vector<TileType>> knownBoard)
+{
+    if (guesses.size() > 0)
+    {
+        for (auto indexPair : frontierIndexes)
+        {
+            bool all = true;
+            auto index = guesses[0][indexPair.row][indexPair.col].index();
+            for (auto guess : guesses)
+            {
+                if (guess[indexPair.row][indexPair.col].index() != index)
+                {
+                    all = false;
+                    break;
+                }
+            }
+            if (all)
+            {
+                knownBoard[indexPair.row][indexPair.col] = guesses[0][indexPair.row][indexPair.col];
+            }
+        }
+    }
+
+    return knownBoard;
+}
+
 vector<vector<vector<TileType>>> getGuesses(vector<vector<TileType>> knownBoard, vector<IndexPair> frontierIndexes)
 {
     vector<vector<vector<TileType>>> guesses;
